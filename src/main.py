@@ -15,12 +15,22 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import sys, os
+import sys, os, os.path
 import time
 import optparse
 
 def rotate():
     print >> sys.stdout, "Tick"
+
+def verify(opts):
+    if not opts or not opts.seconds or not opts.path:
+        return 1
+
+    if not os.path.exists(opts.path):
+        print >> sys.stderr, "The specified working directory does not exists", os.linesep
+        return 2
+
+    return 0
 
 def main(opts):
     parser = optparse.OptionParser("%prog -p [seconds] -w [path]", version="%prog 0.1")
@@ -29,11 +39,12 @@ def main(opts):
     parser.add_option("-w", "--work-dir", action="store", type="string",
             dest="path", help = "path to working directory")
 
-    if not opts:
-        parser.print_usage()
-        return 0
-
     (opts, args) = parser.parse_args()
+
+    e = verify(opts)
+    if e:
+        parser.print_usage()
+        return e
 
     try:
         while True:
