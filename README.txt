@@ -5,7 +5,7 @@ Options:
     * --version                    - show program's version number and exit.
 
 Dependencies:
-    * python 2.7.3 - http://www.python.org
+    * python 2.7.5 - http://www.python.org
 
 Supported platforms:
     * Linux
