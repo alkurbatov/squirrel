@@ -41,6 +41,8 @@ def compress(path):
             print >> sys.stdout, "Compressing %s..." % f
             z.write(filename = f, compress_type = ZIP_DEFLATED)
 
+            os.unlink(f)
+
     print >> sys.stdout, "Archive %s was created successfully" % n
 
 def verify(opts):
