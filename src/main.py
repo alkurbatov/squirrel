@@ -32,7 +32,7 @@ def verify(opts):
     if not opts or not opts.seconds or not opts.path:
         return 1
 
-    if not os.path.exists(opts.path):
+    if not os.path.isdir(opts.path):
         print >> sys.stderr, "The specified working directory does not exists", os.linesep
         return 2
 
