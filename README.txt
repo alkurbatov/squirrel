@@ -1,3 +1,9 @@
+Options:
+    * -p SECONDS, --period=SECONDS - rotating period;
+    * -w PATH, --work-dir=PATH     - path to working directory;
+    * -h, --help                   - brief help;
+    * --version                    - show program's version number and exit.
+
 Dependencies:
     * python 2.7.3 - http://www.python.org
 
