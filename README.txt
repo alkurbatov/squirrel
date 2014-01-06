@@ -16,6 +16,7 @@ Coding style:
     * No tabs only spaces.
     * Padding width is 4 spaces.
     * Trailing spaces are forbidden.
+    * Each file must end with a blank line.
 
 Commit rules:
     Each commit must have one of the following prefixes:
