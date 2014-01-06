@@ -19,31 +19,7 @@ import sys, os, os.path
 import time
 import optparse
 
-from datetime import datetime
-
-from zipfile import ZipFile
-from zipfile import ZIP_DEFLATED
-
-def compress(path):
-    os.chdir(path)
-
-    t = datetime.now()
-    n = t.strftime("%Y%m%d-%H%M%S") + ".zip"
-
-    with ZipFile(n, 'w') as z:
-        for f in os.listdir(path):
-            if os.path.islink(f) or os.path.isdir(f):
-                continue
-
-            if os.path.splitext(f)[1] in [".zip", ".tar", ".bz2", ".gz"]:
-                continue
-
-            print >> sys.stdout, "Compressing %s..." % f
-            z.write(filename = f, compress_type = ZIP_DEFLATED)
-
-            os.unlink(f)
-
-    print >> sys.stdout, "Archive %s was created successfully" % n
+import core
 
 def verify(opts):
     if not opts or not opts.seconds or not opts.path:
@@ -72,7 +48,7 @@ def main(opts):
     try:
         while True:
             time.sleep(opts.seconds)
-            compress(opts.path)
+            core.compress(opts.path)
 
     except KeyboardInterrupt:
         print >> sys.stdout, "Keyboard interrupt received, shutting down..."
