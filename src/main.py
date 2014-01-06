@@ -19,13 +19,16 @@ import sys, os, os.path
 import time
 import optparse
 
+from datetime import datetime
+
 from zipfile import ZipFile
 from zipfile import ZIP_DEFLATED
 
 def compress(path):
     os.chdir(path)
 
-    n = "logs.zip"
+    t = datetime.now()
+    n = t.strftime("%Y%m%d-%H%M%S") + ".zip"
 
     with ZipFile(n, 'w') as z:
         for f in os.listdir(path):
@@ -38,7 +41,7 @@ def compress(path):
             print >> sys.stdout, "Compressing %s..." % f
             z.write(filename = f, compress_type = ZIP_DEFLATED)
 
-    print >> sys.stdout, "Data was compressed successfully"
+    print >> sys.stdout, "Archive %s was created successfully" % n
 
 def verify(opts):
     if not opts or not opts.seconds or not opts.path:
