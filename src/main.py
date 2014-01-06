@@ -19,14 +19,26 @@ import sys, os, os.path
 import time
 import optparse
 
-def rotate(path):
+from zipfile import ZipFile
+from zipfile import ZIP_DEFLATED
+
+def compress(path):
     os.chdir(path)
 
-    for o in os.listdir(path):
-        if os.path.islink(o) or os.path.isdir(o):
-            continue
+    n = "logs.zip"
 
-        print o
+    with ZipFile(n, 'w') as z:
+        for f in os.listdir(path):
+            if os.path.islink(f) or os.path.isdir(f):
+                continue
+
+            if os.path.splitext(f)[1] in [".zip", ".tar", ".bz2", ".gz"]:
+                continue
+
+            print >> sys.stdout, "Compressing %s..." % f
+            z.write(filename = f, compress_type = ZIP_DEFLATED)
+
+    print >> sys.stdout, "Data was compressed successfully"
 
 def verify(opts):
     if not opts or not opts.seconds or not opts.path:
@@ -55,7 +67,7 @@ def main(opts):
     try:
         while True:
             time.sleep(opts.seconds)
-            rotate(opts.path)
+            compress(opts.path)
 
     except KeyboardInterrupt:
         print >> sys.stdout, "Keyboard interrupt received, shutting down..."
