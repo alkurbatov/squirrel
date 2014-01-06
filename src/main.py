@@ -19,8 +19,14 @@ import sys, os, os.path
 import time
 import optparse
 
-def rotate():
-    print >> sys.stdout, "Tick"
+def rotate(path):
+    os.chdir(path)
+
+    for o in os.listdir(path):
+        if os.path.islink(o) or os.path.isdir(o):
+            continue
+
+        print o
 
 def verify(opts):
     if not opts or not opts.seconds or not opts.path:
@@ -49,7 +55,7 @@ def main(opts):
     try:
         while True:
             time.sleep(opts.seconds)
-            rotate()
+            rotate(opts.path)
 
     except KeyboardInterrupt:
         print >> sys.stdout, "Keyboard interrupt received, shutting down..."
