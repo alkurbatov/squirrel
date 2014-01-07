@@ -4,6 +4,9 @@ Options:
     * -h, --help                   - brief help;
     * --version                    - show program's version number and exit.
 
+Dev Options:
+    * -d, --debug                  - stop from hiding Python exceptions.
+
 Dependencies:
     * python 2.7.5 - http://www.python.org
 
