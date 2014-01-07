@@ -17,24 +17,29 @@
 
 import sys, os, os.path
 import time
+import re
 import optparse
 
-import core
+import core, convert
 
 def verify(opts):
-    if not opts or not opts.seconds or not opts.path:
+    if not opts or not opts.time or not opts.path:
         return 2
 
     if not os.path.isdir(opts.path):
         print >> sys.stderr, "The specified working directory does not exists", os.linesep
         return 3
 
+    if not re.search(r"(?i)[0-9][dhm]", opts.time):
+        print >> sys.stderr, "Invalid time format", os.linesep
+        return 4
+
     return 0
 
 def main(opts):
-    parser = optparse.OptionParser("%prog -p [seconds] -w [path]", version="%prog 0.1")
-    parser.add_option("-p", "--period", action="store", type="int",
-            dest="seconds", help = "rotating period")
+    parser = optparse.OptionParser("%prog -p [time] -w [path]", version="%prog 0.1")
+    parser.add_option("-p", "--period", action="store", type="string",
+            dest="time", help = "rotating period, e.g.: 1d10h20m")
     parser.add_option("-w", "--work-dir", action="store", type="string",
             dest="path", help = "path to working directory")
 
@@ -51,8 +56,10 @@ def main(opts):
         return e
 
     try:
+        s = convert.to_seconds(opts.time)
+
         while True:
-            time.sleep(opts.seconds)
+            time.sleep(s)
             core.compress(opts.path)
 
     except KeyboardInterrupt:
