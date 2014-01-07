@@ -1,5 +1,5 @@
 Options:
-    * -p SECONDS, --period=SECONDS - rotating period;
+    * -p TIME, --period=TIME       - rotating period, e.g.: 1d10h20m;
     * -w PATH, --work-dir=PATH     - path to working directory;
     * -h, --help                   - brief help;
     * --version                    - show program's version number and exit.
