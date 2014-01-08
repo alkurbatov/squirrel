@@ -22,7 +22,7 @@ from datetime import datetime
 from zipfile import ZipFile
 from zipfile import ZIP_DEFLATED
 
-def compress(path):
+def compress(path, dry_run):
     os.chdir(path)
 
     t = datetime.now()
@@ -39,7 +39,9 @@ def compress(path):
             print >> sys.stdout, "Compressing %s..." % f
             z.write(filename = f, compress_type = ZIP_DEFLATED)
 
-            os.unlink(f)
+            if not dry_run:
+                print >> sys.stdout, "Removing %s..." % f
+                os.unlink(f)
 
     print >> sys.stdout, "Archive %s was created successfully" % n
 

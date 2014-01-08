@@ -46,6 +46,8 @@ def main(opts):
     group = optparse.OptionGroup(parser, "Dev Options")
     group.add_option("-d", "--debug", action = "store_true", default = False,
             dest = "debug", help = "enables debug mode")
+    group.add_option("--dry-run", action = "store_true", default = False,
+            dest = "dry_run", help = "do not delete files, only compress them")
     parser.add_option_group(group)
 
     (opts, args) = parser.parse_args()
@@ -60,7 +62,7 @@ def main(opts):
 
         while True:
             time.sleep(s)
-            core.compress(opts.path)
+            core.compress(opts.path, opts.dry_run)
 
     except KeyboardInterrupt:
         print >> sys.stdout, "Keyboard interrupt received, shutting down..."
