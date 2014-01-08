@@ -5,7 +5,8 @@ Options:
     * --version                    - show program's version number and exit.
 
 Dev Options:
-    * -d, --debug                  - stop from hiding Python exceptions.
+    * -d, --debug                  - stop from hiding Python exceptions;
+    * --dry-run                    - do not delete files, only compress them.
 
 Dependencies:
     * python 2.7.5 - http://www.python.org
