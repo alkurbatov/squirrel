@@ -22,6 +22,15 @@ from datetime import datetime
 from zipfile import ZipFile
 from zipfile import ZIP_DEFLATED
 
+def remove(path):
+    try:
+        print >> sys.stdout, "Removing %s..." % path
+        os.unlink(path)
+
+    except Exception, e:
+        print >> sys.stderr, "Failed to remove %s" % path
+        print >> sys.stderr, repr(e)
+
 def compress(path, dry_run):
     os.chdir(path)
 
@@ -40,8 +49,7 @@ def compress(path, dry_run):
             z.write(filename = f, compress_type = ZIP_DEFLATED)
 
             if not dry_run:
-                print >> sys.stdout, "Removing %s..." % f
-                os.unlink(f)
+                remove(f)
 
     print >> sys.stdout, "Archive %s was created successfully" % n
 
