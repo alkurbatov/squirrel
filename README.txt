@@ -11,6 +11,9 @@ Dev Options:
 Dependencies:
     * python 2.7.5 - http://www.python.org
 
+    Optional:
+        * pyinstaller 2.1 - http://www.pyinstaller.org
+
 Supported platforms:
     * Linux
     * Windows
