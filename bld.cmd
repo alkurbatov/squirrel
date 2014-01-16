@@ -15,14 +15,12 @@
 :: You should have received a copy of the GNU General Public License
 :: along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-SET BUILDER=pyinstaller
-SET OPTS=--onefile --console --noconfirm
 SET TARGET=src\squirrel.py
 SET SPEC=squirrel.spec
 
 if exist %SPEC% (
-	%BUILDER% %OPTS% %SPEC%
-) else (
-	%BUILDER% %OPTS% %TARGET%
+	SET TARGET=%SPEC%
 )
+
+pyinstaller --onefile --console --noconfirm %TARGET%
 
