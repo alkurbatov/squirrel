@@ -31,20 +31,33 @@ def remove(path):
         print >> sys.stderr, "Failed to remove %s" % path
         print >> sys.stderr, repr(e)
 
+def explore(path):
+    l = []
+
+    for f in os.listdir(path):
+        if os.path.islink(f) or os.path.isdir(f):
+            continue
+
+        if os.path.splitext(f)[1] in [".zip", ".tar", ".bz2", ".gz"]:
+            continue
+
+        l.append(f)
+
+    return l
+
 def compress(path, dry_run):
     os.chdir(path)
+
+    l = explore(path)
+    if not l:
+        print >> sys.stdout, "Nothing to do"
+        return
 
     t = datetime.now()
     n = t.strftime("%Y%m%d-%H%M%S") + ".zip"
 
     with ZipFile(n, 'w') as z:
-        for f in os.listdir(path):
-            if os.path.islink(f) or os.path.isdir(f):
-                continue
-
-            if os.path.splitext(f)[1] in [".zip", ".tar", ".bz2", ".gz"]:
-                continue
-
+        for f in l:
             print >> sys.stdout, "Compressing %s..." % f
             z.write(filename = f, compress_type = ZIP_DEFLATED)
 
