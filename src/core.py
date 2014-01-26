@@ -22,6 +22,14 @@ from datetime import datetime
 from zipfile import ZipFile
 from zipfile import ZIP_DEFLATED
 
+def busy(path):
+    try:
+         with open(path, "a+") as f:
+            return False
+
+    except IOError:
+        return True
+
 def remove(path):
     try:
         print >> sys.stdout, "Removing %s..." % path
@@ -39,6 +47,10 @@ def explore(path):
             continue
 
         if os.path.splitext(f)[1] in [".zip", ".tar", ".bz2", ".gz"]:
+            continue
+
+        if busy(f):
+            print >> sys.stdout, "Cant access %s , file is busy" % f
             continue
 
         l.append(f)
