@@ -47,10 +47,11 @@ def explore(path):
             continue
 
         if os.path.splitext(f)[1] in [".zip", ".tar", ".bz2", ".gz", ".exe"]:
+            print >> sys.stdout, "Ignoring %s , unsupported file extension" % f
             continue
 
         if busy(f):
-            print >> sys.stdout, "Cant access %s , file is busy" % f
+            print >> sys.stdout, "Cant access %s , file is busy or inaccessible" % f
             continue
 
         l.append(f)
