@@ -46,7 +46,7 @@ def explore(path):
         if os.path.islink(f) or os.path.isdir(f):
             continue
 
-        if os.path.splitext(f)[1] in [".zip", ".tar", ".bz2", ".gz"]:
+        if os.path.splitext(f)[1] in [".zip", ".tar", ".bz2", ".gz", ".exe"]:
             continue
 
         if busy(f):
