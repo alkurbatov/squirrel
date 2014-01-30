@@ -35,7 +35,7 @@ def remove(path):
         print >> sys.stdout, "Removing %s..." % path
         os.unlink(path)
 
-    except IOError, e:
+    except OSError, e:
         print >> sys.stderr, "Failed to remove %s" % path
         print >> sys.stderr, repr(e)
 
