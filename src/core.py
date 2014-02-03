@@ -16,24 +16,21 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import sys, os, os.path
+import tempfile
 
 from datetime import datetime
 
 from zipfile import ZipFile
 from zipfile import ZIP_DEFLATED
 
-def busy(path):
-    try:
-         with open(path, "a+") as f:
-            return False
-
-    except IOError:
-        return True
-
 def remove(path):
     try:
         print >> sys.stdout, "Removing %s..." % path
-        os.unlink(path)
+
+        t = tempfile.NamedTemporaryFile()
+
+        os.rename(path, t.name)
+        os.unlink(t.name)
 
     except OSError, e:
         print >> sys.stderr, "Failed to remove %s" % path
@@ -48,10 +45,6 @@ def explore(path):
 
         if os.path.splitext(f)[1] in [".zip", ".tar", ".bz2", ".gz", ".exe"]:
             print >> sys.stdout, "Ignoring %s , unsupported file extension" % f
-            continue
-
-        if busy(f):
-            print >> sys.stdout, "Cant access %s , file is busy or inaccessible" % f
             continue
 
         l.append(f)
