@@ -23,14 +23,18 @@ from datetime import datetime
 from zipfile import ZipFile
 from zipfile import ZIP_DEFLATED
 
+def genname():
+    with tempfile.NamedTemporaryFile() as f:
+        return f.name
+
 def remove(path):
     try:
         print >> sys.stdout, "Removing %s..." % path
 
-        t = tempfile.NamedTemporaryFile()
+        n = genname()
 
-        os.rename(path, t.name)
-        os.unlink(t.name)
+        os.rename(path, n)
+        os.unlink(n)
 
     except OSError, e:
         print >> sys.stderr, "Failed to remove %s" % path
