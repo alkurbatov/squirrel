@@ -33,7 +33,13 @@ def remove(path):
 
         n = genname()
 
-        os.rename(path, n)
+        try:
+            os.rename(path, n)
+
+        except OSError:
+            print >> sys.stderr, "File %s is busy or inaccessible, removal was skipped" % path
+            return
+
         os.unlink(n)
 
     except OSError, e:
