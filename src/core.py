@@ -16,35 +16,20 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import sys, os, os.path
-import tempfile
 
 from datetime import datetime
 
 from zipfile import ZipFile
 from zipfile import ZIP_DEFLATED
 
-def genname():
-    with tempfile.NamedTemporaryFile() as f:
-        return f.name
-
 def remove(path):
     try:
         print >> sys.stdout, "Removing %s..." % path
 
-        n = genname()
+        os.unlink(path)
 
-        try:
-            os.rename(path, n)
-
-        except OSError:
-            print >> sys.stderr, "File %s is busy or inaccessible, removal was skipped" % path
-            return
-
-        os.unlink(n)
-
-    except OSError, e:
-        print >> sys.stderr, "Failed to remove %s" % path
-        print >> sys.stderr, repr(e)
+    except OSError:
+        print >> sys.stderr, "File %s is busy or inaccessible, removal has failed" % path
 
 def explore(path):
     l = []
