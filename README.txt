@@ -1,6 +1,7 @@
 Options:
     * -p TIME, --period=TIME       - rotating period, e.g.: 1d10h20m;
     * -w PATH, --work-dir=PATH     - path to working directory;
+    * --once                       - rotate only once and then exit;
     * -h, --help                   - brief help;
     * --version                    - show program's version number and exit.
 
