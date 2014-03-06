@@ -9,6 +9,10 @@ Dev Options:
     * -d, --debug                  - stop from hiding Python exceptions;
     * --dry-run                    - do not delete files, only compress them.
 
+Hints:
+   * squirrel -p 0d -w /somewhere/in/the/sky --once
+   will rotate logs immediately and stop further execution the of the program.
+
 Dependencies:
     * python 2.7.5 - http://www.python.org
 
