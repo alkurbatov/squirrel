@@ -42,6 +42,8 @@ def main(opts):
             dest="time", help = "rotating period, e.g.: 1d10h20m")
     parser.add_option("-w", "--work-dir", action="store", type="string",
             dest="path", help = "path to working directory")
+    parser.add_option("--once", action = "store_true", default = False,
+            dest = "once", help = "rotate only once and then exit")
 
     group = optparse.OptionGroup(parser, "Dev Options")
     group.add_option("-d", "--debug", action = "store_true", default = False,
@@ -63,6 +65,9 @@ def main(opts):
         while True:
             time.sleep(s)
             core.compress(opts.path, opts.dry_run)
+
+            if opts.once:
+                break
 
     except KeyboardInterrupt:
         print >> sys.stdout, "Keyboard interrupt received, shutting down..."
