@@ -11,7 +11,7 @@ Dev Options:
 
 Hints:
    * squirrel -p 0d -w /somewhere/in/the/sky --once
-   will rotate logs immediately and stop further execution the of the program.
+   will rotate logs immediately and stop further execution of the program.
 
 Dependencies:
     * python 2.7.5 - http://www.python.org
