@@ -15,41 +15,28 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
-import sys, os, os.path
+import sys, os
 import time, sched
-import re
 import optparse
 
-import core, convert
+import core, config
+import convert
 
-def verify(opts):
-    if not opts or not opts.path:
-        return 2
-
-    if not os.path.isdir(opts.path):
-        print >> sys.stderr, "The specified working directory does not exists", os.linesep
-        return 3
-
-    if not re.search(r"(?i)[0-9][dhm]", opts.delay):
-        print >> sys.stderr, "Invalid time format", os.linesep
-        return 4
-
-    return 0
-
-def serve(delay, path, dry_run):
-    if delay == 0:
-        core.compress(path, dry_run)
+def serve(conf):
+    t = convert.to_seconds(conf.delay)
+    if t == 0:
+        core.compress(conf.path, conf.dry_run)
         return 0
 
     s = sched.scheduler(time.time, time.sleep)
 
     while True:
-        s.enter(delay, 1, core.compress, [path, dry_run])
+        s.enter(t, 1, core.compress, [conf.path, conf.dry_run])
         s.run()
 
 def main(opts):
     parser = optparse.OptionParser("%prog -p [time] -w [path]", version="%prog 0.1")
-    parser.add_option("-p", "--period", action = "store", type = "string", default = "0m",
+    parser.add_option("-p", "--period", action = "store", type = "string",
             dest="delay", help = "rotating period, e.g.: 1d10h20m;" \
                                     "omit this option to start rotation immediately")
     parser.add_option("-w", "--work-dir", action = "store", type = "string",
@@ -58,19 +45,19 @@ def main(opts):
     group = optparse.OptionGroup(parser, "Dev Options")
     group.add_option("-d", "--debug", action = "store_true", default = False,
             dest = "debug", help = "enables debug mode")
-    group.add_option("--dry-run", action = "store_true", default = False,
+    group.add_option("--dry-run", action = "store_true",
             dest = "dry_run", help = "do not delete files, only compress them")
     parser.add_option_group(group)
 
     (opts, args) = parser.parse_args()
 
-    e = verify(opts)
-    if e:
-        parser.print_usage()
-        return e
-
     try:
-        serve(convert.to_seconds(opts.delay), opts.path, opts.dry_run)
+        c = config.get(opts)
+        if not c:
+            parser.print_usage()
+            return 1
+
+        serve(c)
 
     except KeyboardInterrupt:
         print >> sys.stdout, "Keyboard interrupt received, shutting down..."
