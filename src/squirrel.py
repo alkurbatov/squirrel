@@ -23,27 +23,41 @@ import optparse
 import core, convert
 
 def verify(opts):
-    if not opts or not opts.time or not opts.path:
+    if not opts or not opts.path:
         return 2
 
     if not os.path.isdir(opts.path):
         print >> sys.stderr, "The specified working directory does not exists", os.linesep
         return 3
 
-    if not re.search(r"(?i)[0-9][dhm]", opts.time):
+    if not re.search(r"(?i)[0-9][dhm]", opts.delay):
         print >> sys.stderr, "Invalid time format", os.linesep
         return 4
 
     return 0
 
+def serve(delay, path, dry_run):
+    if delay == 0:
+        core.compress(path, dry_run)
+        return 0
+
+    s = sched.scheduler(time.time, time.sleep)
+
+    try:
+        while True:
+            s.enter(delay, 1, core.compress, [path, dry_run])
+            s.run()
+
+    finally:
+        for v in s.queue:
+            s.cancel(v)
+
 def main(opts):
     parser = optparse.OptionParser("%prog -p [time] -w [path]", version="%prog 0.1")
-    parser.add_option("-p", "--period", action="store", type="string",
-            dest="time", help = "rotating period, e.g.: 1d10h20m")
-    parser.add_option("-w", "--work-dir", action="store", type="string",
+    parser.add_option("-p", "--period", action = "store", type = "string", default = "0m",
+            dest="delay", help = "rotating period, e.g.: 1d10h20m")
+    parser.add_option("-w", "--work-dir", action = "store", type = "string",
             dest="path", help = "path to working directory")
-    parser.add_option("--once", action = "store_true", default = False,
-            dest = "once", help = "rotate only once and then exit")
 
     group = optparse.OptionGroup(parser, "Dev Options")
     group.add_option("-d", "--debug", action = "store_true", default = False,
@@ -59,17 +73,8 @@ def main(opts):
         parser.print_usage()
         return e
 
-    s = sched.scheduler(time.time, time.sleep)
-
     try:
-        t = convert.to_seconds(opts.time)
-
-        while True:
-            s.enter(t, 1, core.compress, [opts.path, opts.dry_run])
-            s.run()
-
-            if opts.once:
-                break
+        serve(convert.to_seconds(opts.delay), opts.path, opts.dry_run)
 
     except KeyboardInterrupt:
         print >> sys.stdout, "Keyboard interrupt received, shutting down..."
@@ -84,10 +89,6 @@ def main(opts):
             raise
 
         return 1
-
-    finally:
-        for v in s.queue:
-            s.cancel(v)
 
     return 0
 
