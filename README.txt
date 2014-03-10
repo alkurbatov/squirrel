@@ -1,17 +1,13 @@
 Options:
     * -p TIME, --period=TIME       - rotating period, e.g.: 1d10h20m;
+                                     omit this option to start rotation immediately;
     * -w PATH, --work-dir=PATH     - path to working directory;
-    * --once                       - rotate only once and then exit;
     * -h, --help                   - brief help;
     * --version                    - show program's version number and exit.
 
 Dev Options:
     * -d, --debug                  - stop from hiding Python exceptions;
     * --dry-run                    - do not delete files, only compress them.
-
-Hints:
-   * squirrel -p 0d -w /somewhere/in/the/sky --once
-   will rotate logs immediately and stop further execution of the program.
 
 Dependencies:
     * python 2.7.5 - http://www.python.org

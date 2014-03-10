@@ -55,7 +55,8 @@ def serve(delay, path, dry_run):
 def main(opts):
     parser = optparse.OptionParser("%prog -p [time] -w [path]", version="%prog 0.1")
     parser.add_option("-p", "--period", action = "store", type = "string", default = "0m",
-            dest="delay", help = "rotating period, e.g.: 1d10h20m")
+            dest="delay", help = "rotating period, e.g.: 1d10h20m;" \
+                                    "omit this option to start rotation immediately")
     parser.add_option("-w", "--work-dir", action = "store", type = "string",
             dest="path", help = "path to working directory")
 
