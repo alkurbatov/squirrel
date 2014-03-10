@@ -16,7 +16,7 @@
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 import sys, os, os.path
-import time
+import time, sched
 import re
 import optparse
 
@@ -59,12 +59,14 @@ def main(opts):
         parser.print_usage()
         return e
 
+    s = sched.scheduler(time.time, time.sleep)
+
     try:
-        s = convert.to_seconds(opts.time)
+        t = convert.to_seconds(opts.time)
 
         while True:
-            time.sleep(s)
-            core.compress(opts.path, opts.dry_run)
+            s.enter(t, 1, core.compress, [opts.path, opts.dry_run])
+            s.run()
 
             if opts.once:
                 break
@@ -82,6 +84,10 @@ def main(opts):
             raise
 
         return 1
+
+    finally:
+        for v in s.queue:
+            s.cancel(v)
 
     return 0
 
