@@ -43,14 +43,9 @@ def serve(delay, path, dry_run):
 
     s = sched.scheduler(time.time, time.sleep)
 
-    try:
-        while True:
-            s.enter(delay, 1, core.compress, [path, dry_run])
-            s.run()
-
-    finally:
-        for v in s.queue:
-            s.cancel(v)
+    while True:
+        s.enter(delay, 1, core.compress, [path, dry_run])
+        s.run()
 
 def main(opts):
     parser = optparse.OptionParser("%prog -p [time] -w [path]", version="%prog 0.1")
