@@ -9,6 +9,9 @@ Dev Options:
     * -d, --debug                  - stop from hiding Python exceptions;
     * --dry-run                    - do not delete files, only compress them.
 
+Configuration:
+    Squirrel has ability to use configuration files (examples can be found in 'conf' directory). Please pay attention that command line options have higher priority and will be used insted of ones specified in configuration file.
+
 Dependencies:
     * python 2.7.5 - http://www.python.org
 
