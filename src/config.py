@@ -15,15 +15,26 @@
 # You should have received a copy of the GNU General Public License
 # along with this program. If not, see <http://www.gnu.org/licenses/>.
 
+import ConfigParser
 import sys, os.path
 import re
 
 class Unit(object):
     def __init__(self):
-        #defaults
         self.delay = "0m"
         self.path = None
         self.dry_run = False
+
+    def parse(self, src):
+        c = ConfigParser.RawConfigParser()
+        if not c.read(src):
+            return
+
+        if c.has_option("General", "period"):
+            self.delay = c.get("General", "period")
+
+        if c.has_option("General", "workDir"):
+            self.path = c.get("General", "workDir")
 
     def merge(self, opts):
         if opts.delay:
@@ -52,6 +63,8 @@ def is_invalid(conf):
 
 def get(opts):
     c = Unit()
+
+    c.parse("squirrel.conf")
     c.merge(opts)
 
     if is_invalid(c):
