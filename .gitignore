@@ -6,5 +6,5 @@ tags
 build
 dist
 squirrel.spec
-squirrel.conf
+squirrel.ini
 

@@ -64,7 +64,7 @@ def is_invalid(conf):
 def get(opts):
     c = Unit()
 
-    c.parse("squirrel.conf")
+    c.parse("squirrel.ini")
     c.merge(opts)
 
     if is_invalid(c):
