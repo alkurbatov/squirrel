@@ -22,7 +22,7 @@ import re
 class Unit(object):
     def __init__(self):
         self.delay = "0m"
-        self.path = None
+        self.path = []
         self.dry_run = False
 
     def parse(self, src):
@@ -34,14 +34,14 @@ class Unit(object):
             self.delay = c.get("General", "period")
 
         if c.has_option("General", "workDir"):
-            self.path = c.get("General", "workDir")
+            self.path = c.get("General", "workDir").split(";")
 
     def merge(self, opts):
         if opts.delay:
             self.delay = opts.delay
 
         if opts.path:
-            self.path = opts.path
+            self.path = opts.path.split(";")
 
         if opts.dry_run:
             self.dry_run = opts.dry_run
@@ -51,8 +51,11 @@ def is_invalid(conf):
         print >> sys.stderr, "The working directory was not specified", os.linesep
         return True
 
-    if not os.path.isdir(conf.path):
-        print >> sys.stderr, "The specified working directory does not exists", os.linesep
+    for p in conf.path:
+        if os.path.isdir(p):
+            continue
+
+        print >> sys.stderr, "The working directory does not exists - %s" %p, os.linesep
         return True
 
     if not re.search(r"(?i)[0-9][dhm]", conf.delay):

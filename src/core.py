@@ -51,7 +51,7 @@ def compress(path, dry_run):
 
     l = explore(path)
     if not l:
-        print >> sys.stdout, "Nothing to do"
+        print >> sys.stdout, "Nothing to do - %s" % path
         return
 
     t = datetime.now()

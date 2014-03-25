@@ -25,13 +25,17 @@ import convert
 def serve(conf):
     t = convert.to_seconds(conf.delay)
     if t == 0:
-        core.compress(conf.path, conf.dry_run)
+        for p in conf.path:
+            core.compress(p, conf.dry_run)
+
         return 0
 
     s = sched.scheduler(time.time, time.sleep)
 
     while True:
-        s.enter(t, 1, core.compress, [conf.path, conf.dry_run])
+        for p in conf.path:
+            s.enter(t, 1, core.compress, [p, conf.dry_run])
+
         s.run()
 
 def main(opts):
