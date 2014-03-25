@@ -39,7 +39,7 @@ def serve(conf):
         s.run()
 
 def main(opts):
-    parser = optparse.OptionParser("%prog -p [time] -w [path]", version="%prog 0.12")
+    parser = optparse.OptionParser("%prog -p [time] -w [path]", version="%prog 0.22")
     parser.add_option("-p", "--period", action = "store", type = "string",
             dest="delay", help = "rotating period")
     parser.add_option("-w", "--work-dir", action = "store", type = "string",
