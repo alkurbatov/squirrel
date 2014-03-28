@@ -19,15 +19,23 @@ import ConfigParser
 import sys, os.path
 import re
 
+import core
+
 class Unit(object):
     def __init__(self):
         self.delay = "0m"
         self.path = []
         self.dry_run = False
 
-    def parse(self, src):
+    def name(self):
+        if os.name == "nt":
+            return "squirrel.ini"
+
+        return "squirrel.conf"
+
+    def parse(self):
         c = ConfigParser.RawConfigParser()
-        if not c.read(src):
+        if not c.read(self.name()):
             return
 
         if c.has_option("General", "period"):
@@ -67,7 +75,7 @@ def is_invalid(conf):
 def get(opts):
     c = Unit()
 
-    c.parse("squirrel.ini")
+    c.parse()
     c.merge(opts)
 
     if is_invalid(c):
