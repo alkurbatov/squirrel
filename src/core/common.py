@@ -57,13 +57,17 @@ def compress(path, dry_run):
     t = datetime.now()
     n = t.strftime("%Y%m%d-%H%M%S") + ".zip"
 
-    with ZipFile(n, 'w') as z:
+    z = ZipFile(n, 'w')
+
+    try:
         for f in l:
             print >> sys.stdout, "Compressing %s..." % f
             z.write(filename = f, compress_type = ZIP_DEFLATED)
 
             if not dry_run:
                 remove(f)
+    finally:
+        z.close()
 
     print >> sys.stdout, "Archive %s was created successfully" % n
 
