@@ -14,7 +14,7 @@ Configuration:
     Squirrel has ability to use configuration files (examples can be found in 'conf' directory). Please pay attention that command line options have higher priority and will be used instead of ones specified in configuration file.
 
 Dependencies:
-    * python 2.7.5 - http://www.python.org
+    * python >= 2.6.6 (3.0+ is not supported) - http://www.python.org
 
     Optional:
         * pyinstaller 2.1 - http://www.pyinstaller.org
