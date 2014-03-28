@@ -5,7 +5,7 @@
 tags
 build
 dist
-*.spec
-*.ini
-*.conf
+squirrel.spec
+squirrel.ini
+squirrel.conf
 
