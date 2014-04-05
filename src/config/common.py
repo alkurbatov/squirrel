@@ -19,23 +19,15 @@ import ConfigParser
 import sys, os.path
 import re
 
-import core
-
 class Unit(object):
     def __init__(self):
         self.delay = "0m"
         self.path = []
         self.dry_run = False
 
-    def name(self):
-        if os.name == "nt":
-            return "squirrel.ini"
-
-        return "squirrel.conf"
-
-    def parse(self):
+    def parse(self, src):
         c = ConfigParser.RawConfigParser()
-        if not c.read(self.name()):
+        if not c.read(src):
             return
 
         if c.has_option("General", "period"):
@@ -54,32 +46,21 @@ class Unit(object):
         if opts.dry_run:
             self.dry_run = opts.dry_run
 
-def is_invalid(conf):
-    if not conf.path:
-        print >> sys.stderr, "The working directory was not specified", os.linesep
-        return True
+    def is_invalid(self):
+        if not self.path:
+            print >> sys.stderr, "The working directory was not specified", os.linesep
+            return True
 
-    for p in conf.path:
-        if os.path.isdir(p):
-            continue
+        for p in self.path:
+            if os.path.isdir(p):
+                continue
 
-        print >> sys.stderr, "The working directory does not exists - %s" %p, os.linesep
-        return True
+            print >> sys.stderr, "The working directory does not exists - %s" %p, os.linesep
+            return True
 
-    if not re.search(r"(?i)[0-9][dhm]", conf.delay):
-        print >> sys.stderr, "Invalid time format", os.linesep
-        return True
+        if not re.search(r"(?i)[0-9][dhm]", self.delay):
+            print >> sys.stderr, "Invalid time format", os.linesep
+            return True
 
-    return False
-
-def get(opts):
-    c = Unit()
-
-    c.parse()
-    c.merge(opts)
-
-    if is_invalid(c):
-        return None
-
-    return c
+        return False
 

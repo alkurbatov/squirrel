@@ -22,6 +22,17 @@ import optparse
 import core, config
 import convert
 
+def get(opts):
+    c = config.Unit()
+
+    c.parse(os.path.join(opts.config, config.name()))
+    c.merge(opts)
+
+    if c.is_invalid():
+        return None
+
+    return c
+
 def serve(conf):
     t = convert.to_seconds(conf.delay)
     s = sched.scheduler(time.time, time.sleep)
@@ -41,6 +52,8 @@ def main(opts):
             dest="delay", help = "rotating period")
     parser.add_option("-w", "--work-dir", action = "store", type = "string",
             dest="path", help = "path to working directory")
+    parser.add_option("-c", "--config", action = "store", type = "string",
+            dest="config", default="", help = "path to configuration file")
 
     group = optparse.OptionGroup(parser, "Dev Options")
     group.add_option("-d", "--debug", action = "store_true", default = False,
@@ -52,7 +65,7 @@ def main(opts):
     (opts, args) = parser.parse_args()
 
     try:
-        c = config.get(opts)
+        c = get(opts)
         if not c:
             parser.print_usage()
             return 1
