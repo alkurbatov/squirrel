@@ -2,7 +2,9 @@ Options:
     * -p TIME, --period=TIME       - rotating period, e.g.: 1d10h20m;
                                      omit this option to start rotation immediately;
     * -w PATH, --work-dir=PATH     - path to working directory;
-                                     you can specify several directories using ';' symbol as a separator.
+                                     you can specify several directories using ';' symbol as a separator;
+    * -c CONFIG, --config=CONFIG   - path to configuration file;
+                                     by default your current directory will be used;
     * -h, --help                   - brief help;
     * --version                    - show program's version number and exit.
 
