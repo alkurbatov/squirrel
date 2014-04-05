@@ -24,12 +24,6 @@ import convert
 
 def serve(conf):
     t = convert.to_seconds(conf.delay)
-    if t == 0:
-        for p in conf.path:
-            core.compress(p, conf.dry_run)
-
-        return 0
-
     s = sched.scheduler(time.time, time.sleep)
 
     while True:
@@ -37,6 +31,9 @@ def serve(conf):
             s.enter(t, 1, core.compress, [p, conf.dry_run])
 
         s.run()
+
+        if t == 0:
+            break;
 
 def main(opts):
     parser = optparse.OptionParser("%prog -p [time] -w [path]", version="%prog 0.22")
