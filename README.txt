@@ -3,14 +3,14 @@ Options:
                                      omit this option to start rotation immediately;
     * -w PATH, --work-dir=PATH     - path to working directory;
                                      you can specify several directories using ';' symbol as a separator;
+    * --keep                       - do not delete files, only compress them;
     * -c CONFIG, --config=CONFIG   - path to configuration file;
                                      by default your current directory will be used;
     * -h, --help                   - brief help;
     * --version                    - show program's version number and exit.
 
 Dev Options:
-    * -d, --debug                  - stop from hiding Python exceptions;
-    * --dry-run                    - do not delete files, only compress them.
+    * -d, --debug                  - stop from hiding Python exceptions.
 
 Configuration:
     Squirrel has ability to use configuration files (examples can be found in 'conf' directory). Please pay attention that command line options have higher priority and will be used instead of ones specified in configuration file.
