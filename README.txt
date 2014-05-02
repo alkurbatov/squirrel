@@ -6,6 +6,7 @@ Options:
     * --keep                       - do not delete files, only compress them;
     * -c CONFIG, --config=CONFIG   - path to configuration file;
                                      by default your current directory will be used;
+    * --keep                       - do not delete files, only compress them;
     * -h, --help                   - brief help;
     * --version                    - show program's version number and exit.
 
