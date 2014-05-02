@@ -39,7 +39,7 @@ def serve(conf):
 
     while True:
         for p in conf.path:
-            s.enter(t, 1, core.compress, [p, conf.dry_run])
+            s.enter(t, 1, core.compress, [p, conf.keep])
 
         s.run()
 
@@ -52,14 +52,14 @@ def main(opts):
             dest="delay", help = "rotating period")
     parser.add_option("-w", "--work-dir", action = "store", type = "string",
             dest="path", help = "path to working directory")
+    parser.add_option("--keep", action = "store_true",
+            dest = "keep", help = "do not delete files, only compress them")
     parser.add_option("-c", "--config", action = "store", type = "string",
             dest="config", default="", help = "path to configuration file")
 
     group = optparse.OptionGroup(parser, "Dev Options")
     group.add_option("-d", "--debug", action = "store_true", default = False,
             dest = "debug", help = "enables debug mode")
-    group.add_option("--dry-run", action = "store_true",
-            dest = "dry_run", help = "do not delete files, only compress them")
     parser.add_option_group(group)
 
     (opts, args) = parser.parse_args()

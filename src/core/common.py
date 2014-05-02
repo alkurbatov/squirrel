@@ -46,7 +46,7 @@ def explore(path):
 
     return l
 
-def compress(path, dry_run):
+def compress(path, keep):
     os.chdir(path)
 
     l = explore(path)
@@ -64,7 +64,7 @@ def compress(path, dry_run):
             print >> sys.stdout, "Compressing %s..." % f
             z.write(filename = f, compress_type = ZIP_DEFLATED)
 
-            if not dry_run:
+            if not keep:
                 remove(f)
     finally:
         z.close()

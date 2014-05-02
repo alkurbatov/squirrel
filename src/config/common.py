@@ -23,7 +23,7 @@ class Unit(object):
     def __init__(self):
         self.delay = "0m"
         self.path = []
-        self.dry_run = False
+        self.keep = False
 
     def parse(self, src):
         c = ConfigParser.RawConfigParser()
@@ -43,8 +43,8 @@ class Unit(object):
         if opts.path:
             self.path = opts.path.split(";")
 
-        if opts.dry_run:
-            self.dry_run = opts.dry_run
+        if opts.keep:
+            self.keep = opts.keep
 
     def is_invalid(self):
         if not self.path:
