@@ -22,7 +22,8 @@ import re
 class Unit(object):
     def __init__(self):
         self.delay = "0m"
-        self.path = []
+        self.src = []
+        self.dst = ""
         self.keep = False
 
     def parse(self, src):
@@ -34,28 +35,38 @@ class Unit(object):
             self.delay = c.get("General", "period")
 
         if c.has_option("General", "workDir"):
-            self.path = c.get("General", "workDir").split(";")
+            self.src = c.get("General", "workDir").split(";")
+
+        if c.has_option("General", "storageDir"):
+            self.dst = c.get("General", "storageDir")
 
     def merge(self, opts):
         if opts.delay:
             self.delay = opts.delay
 
-        if opts.path:
-            self.path = opts.path.split(";")
+        if opts.src:
+            self.src = opts.src.split(";")
+
+        if opts.dst:
+            self.dst = opts.dst
 
         if opts.keep:
             self.keep = opts.keep
 
     def is_invalid(self):
-        if not self.path:
+        if not self.src:
             print >> sys.stderr, "The working directory was not specified", os.linesep
             return True
 
-        for p in self.path:
+        for p in self.src:
             if os.path.isdir(p):
                 continue
 
             print >> sys.stderr, "The working directory does not exists - %s" %p, os.linesep
+            return True
+
+        if self.dst and not os.path.isdir(self.dst):
+            print >> sys.stderr, "The specified storage directory does not exists", os.linesep
             return True
 
         if not re.search(r"(?i)[0-9][dhm]", self.delay):

@@ -38,8 +38,8 @@ def serve(conf):
     s = sched.scheduler(time.time, time.sleep)
 
     while True:
-        for p in conf.path:
-            s.enter(t, 1, core.compress, [p, conf.keep])
+        for p in conf.src:
+            s.enter(t, 1, core.compress, [p, conf.dst, conf.keep])
 
         s.run()
 
@@ -47,11 +47,13 @@ def serve(conf):
             break;
 
 def main(opts):
-    parser = optparse.OptionParser("%prog -p [time] -w [path]", version="%prog 0.22")
+    parser = optparse.OptionParser("%prog -p [time] -w [src]", version="%prog 0.22")
     parser.add_option("-p", "--period", action = "store", type = "string",
             dest="delay", help = "rotating period")
     parser.add_option("-w", "--work-dir", action = "store", type = "string",
-            dest="path", help = "path to working directory")
+            dest="src", help = "path to working directory")
+    parser.add_option("-s", "--storage-dir", action = "store", type = "string",
+            dest="dst", help = "path to storage directory")
     parser.add_option("--keep", action = "store_true",
             dest = "keep", help = "do not delete files, only compress them")
     parser.add_option("-c", "--config", action = "store", type = "string",

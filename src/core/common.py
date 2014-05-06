@@ -46,16 +46,16 @@ def explore(path):
 
     return l
 
-def compress(path, keep):
-    os.chdir(path)
+def compress(src, dst, keep):
+    os.chdir(src)
 
-    l = explore(path)
+    l = explore(src)
     if not l:
-        print >> sys.stdout, "Nothing to do - %s" % path
+        print >> sys.stdout, "Nothing to do - %s" % src
         return
 
     t = datetime.now()
-    n = t.strftime("%Y%m%d-%H%M%S") + ".zip"
+    n = os.path.join(dst, t.strftime("%Y%m%d-%H%M%S") + ".zip")
 
     z = ZipFile(n, 'w')
 
