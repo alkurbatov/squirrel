@@ -1,8 +1,9 @@
 Options:
     * -p TIME, --period=TIME       - rotating period, e.g.: 1d10h20m;
                                      omit this option to start rotation immediately;
-    * -w PATH, --work-dir=PATH     - path to working directory;
+    * -w SRC, --work-dir=SRC       - path to working directory;
                                      you can specify several directories using ';' symbol as a separator;
+    * -s DST, --storage-dir=DST    - path to storage directory;
     * --keep                       - do not delete files, only compress them;
     * -c CONFIG, --config=CONFIG   - path to configuration file;
                                      by default your current directory will be used;
